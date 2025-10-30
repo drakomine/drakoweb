@@ -25,6 +25,7 @@ function countUp(targetId, finalValue) {
         current += stepValue;
         if (current >= finalValue) {
             clearInterval(timer);
+            // Ensure member count shows 50+ as requested
             element.textContent = targetId === 'member-count' ? `${finalValue}+` : finalValue;
         } else {
             element.textContent = Math.round(current);
@@ -89,7 +90,8 @@ document.getElementById('checkout-form').addEventListener('submit', function(e) 
 
     const selectedPlatform = document.querySelector('input[name="platform"]:checked');
     if (!selectedPlatform) {
-        alert("Please select a platform (Java or Bedrock).");
+        // Use a simple console message instead of alert()
+        console.error("Please select a platform (Java or Bedrock)."); 
         return;
     }
 
@@ -101,8 +103,11 @@ document.getElementById('checkout-form').addEventListener('submit', function(e) 
     // Update payment and Skript API details
     document.getElementById('final-amount-display').textContent = `Final Amount: ₹${checkoutData.finalPrice}`;
     document.getElementById('api-token-code').textContent = API_TOKEN_PLACEHOLDER;
+    
+    // API Payload: Ensures only the base rank name (e.g., "VVIP") is used
+    const baseRank = checkoutData.rankName.split(' ')[0];
     document.getElementById('api-payload-code').textContent = JSON.stringify({
-        rank: checkoutData.rankName.split(' ')[0], // e.g., "VVIP"
+        rank: baseRank, 
         username: checkoutData.username,
         platform: checkoutData.platform
     }, null, 2);
@@ -147,22 +152,20 @@ Payment Proof (upload screenshot): [PLEASE ATTACH THE PAYMENT SCREENSHOT HERE]
     window.location.href = mailtoLink;
 }
 
+// --- Immediate Execution Code (Replaces window.onload) ---
 
-// Initialization on window load
-window.onload = function() {
-    // Initialize Lucide icons
-    lucide.createIcons();
+// Initialize Lucide icons immediately
+lucide.createIcons();
 
-    // Start the counting animation for Purchases (Target: 6)
-    countUp('purchase-count', 6);
+// Start the counting animation for Purchases (Target: 6)
+countUp('purchase-count', 6);
 
-    // Start the counting animation for Members (Target: 60)
-    countUp('member-count', 60);
+// Start the counting animation for Members (Target: 50 for 50+)
+countUp('member-count', 50);
 
-    // Close modal if user clicks outside the content (on the backdrop)
-    document.getElementById('payment-modal').addEventListener('click', function(e) {
-        if (e.target.id === 'payment-modal') {
-            closeModal();
-        }
-    });
-};
+// Close modal if user clicks outside the content (on the backdrop)
+document.getElementById('payment-modal').addEventListener('click', function(e) {
+    if (e.target.id === 'payment-modal') {
+        closeModal();
+    }
+});
