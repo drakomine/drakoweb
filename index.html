@@ -8,14 +8,108 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Load Lucide Icons for features -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Custom Styles -->
-    <link rel="stylesheet" href="main.css"> 
+    
+    <!-- CONSOLIDATED STYLES (PREVIOUSLY main.css) -->
+    <style>
+        /* Custom font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117; /* Dark charcoal/GitHub dark theme */
+            color: #e5e7eb;
+        }
+
+        /* Custom styles for premium look */
+        .rank-card {
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            background: rgba(17, 24, 39, 0.7);
+            border: 1px solid rgba(31, 41, 55, 1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        .rank-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 30px 40px -10px rgba(0, 0, 0, 0.6), 0 10px 15px -5px rgba(0, 0, 0, 0.4);
+            border-color: #f59e0b;
+        }
+        .rank-card.active-rank {
+            border-width: 3px;
+            border-color: #ef4444;
+        }
+
+        /* Gradient for AURA+ */
+        .aura-gradient-text {
+            background-image: linear-gradient(135deg, #f59e0b, #ef4444, #8b5cf6);
+        }
+
+        .purchase-button {
+            transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+        }
+        .purchase-button:active {
+            transform: scale(0.98);
+        }
+
+        /* Animation for Coupon */
+        @keyframes pulse-shadow {
+            0% { box-shadow: 0 0 5px rgba(251, 191, 36, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(251, 191, 36, 1); }
+            100% { box-shadow: 0 0 5px rgba(251, 191, 36, 0.5); }
+        }
+        .coupon-pulse {
+            animation: pulse-shadow 2s infinite;
+        }
+
+        /* --- Mobile Scaling & Responsiveness --- */
+        @media (max-width: 768px) {
+            .feature-grid {
+                grid-template-columns: repeat(1, minmax(0, 1fr));
+            }
+        }
+        .modal-content-area {
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-content-area::-webkit-scrollbar {
+            width: 6px;
+            background-color: #1f2937;
+        }
+        .modal-content-area::-webkit-scrollbar-thumb {
+            background-color: #4b5563;
+            border-radius: 3px;
+        }
+
+        /* --- Custom Platform Selector Styling --- */
+        .platform-selector input[type="radio"]:checked + label {
+            background-color: #ef4444; /* Red 500 */
+            border-color: #fca5a5; /* Red 300 */
+            color: white;
+        }
+        .platform-selector input[type="radio"]:checked + label .icon-color {
+            color: white;
+        }
+        .platform-selector label {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 2px solid #4b5563;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            flex-grow: 1;
+            text-align: center;
+            background-color: #1f2937;
+            color: #9ca3af;
+        }
+        .platform-selector label:hover {
+            border-color: #ef4444;
+        }
+    </style>
 </head>
 <body class="min-h-screen p-4 md:p-8">
 
     <!-- Header and Status Bar -->
     <header class="text-center mb-12">
-        <!-- Server Name and Tagline: Changed text-6xl to text-5xl for better mobile fit -->
+        <!-- FIXED: Mobile font size reduced to text-5xl -->
         <h1 class="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text aura-gradient-text mb-2 tracking-tighter">
             DRAKOMINE
         </h1>
@@ -34,6 +128,7 @@
         <!-- Status Counter (6 Purchases. 50+ Members) -->
         <div class="mt-8 bg-gray-800/70 p-4 rounded-xl shadow-2xl max-w-lg mx-auto border border-gray-700/50 flex flex-col sm:flex-row justify-around items-center space-y-4 sm:space-y-0">
             <div class="text-center">
+                <!-- Counters start at 0 but JS will instantly set them to 6 and 50+ -->
                 <p id="purchase-count" class="text-4xl font-black text-yellow-400">0</p>
                 <p class="text-sm text-gray-400 uppercase tracking-widest">Recent Purchases</p>
             </div>
@@ -48,9 +143,8 @@
     <!-- Rank Cards Section -->
     <main class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto feature-grid">
 
-        <!-- VIP Card (Data attributes used by JS) -->
+        <!-- VIP Card -->
         <section class="rank-card rounded-2xl p-6 shadow-xl hover:shadow-yellow-900/50" data-rank-name="VIP Status" data-base-price="40">
-            <!-- Content remains the same -->
             <div class="text-center mb-6">
                 <h2 class="text-3xl font-bold text-yellow-300">VIP Status</h2>
                 <p class="text-base text-gray-400">The essential upgrade.</p>
@@ -270,56 +364,4 @@
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email Address (For Confirmation)</label>
                         <input type="email" id="email" name="email" required placeholder="billing@example.com" class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 focus:ring-red-500 focus:border-red-500 text-white placeholder-gray-400 transition duration-150">
-                    </div>
-
-                    <!-- Price Summary -->
-                    <div class="border-t border-gray-700 pt-4 space-y-1">
-                        <div class="flex justify-between text-sm text-gray-400">
-                            <span>Base Price:</span>
-                            <span id="base-price-display">₹0</span>
-                        </div>
-                        <div class="flex justify-between text-sm text-yellow-500">
-                            <span>Coupon (DRAKO - ₹20 OFF):</span>
-                            <span id="coupon-discount-display">-₹20</span>
-                        </div>
-                        <div class="flex justify-between text-lg font-bold text-red-400 pt-2 border-t border-gray-700 mt-2">
-                            <span>Total Payable:</span>
-                            <span id="total-price-display">₹0</span>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-lg purchase-button shadow-lg">
-                        Proceed to Payment
-                    </button>
-                </form>
-            </div>
-            
-            <!-- Step 2: Payment QR Code & Proof Instructions -->
-            <div id="step-payment" class="space-y-4 hidden text-center">
-                <h3 class="text-2xl font-bold text-red-400 mb-2">1. Complete Payment</h3>
-                <p class="text-gray-400">Scan the QR code below to pay the exact amount:</p>
-                
-                <!-- QR Code Placeholder -->
-                <div class="bg-white p-4 inline-block rounded-lg shadow-xl border-4 border-red-500/50">
-                    <!-- Placeholder: Replace this source with your actual QR code image -->
-                    <img id="qr-code-placeholder" src="https://placehold.co/200x200/222222/ffffff?text=QR+Code+Goes+Here" alt="QR Code for Payment" class="w-48 h-48 mx-auto">
-                </div>
-                
-                <p class="text-xl font-black text-white" id="final-amount-display">Final Amount: ₹0</p>
-                
-                <p class="text-sm text-yellow-400 font-medium pt-2">
-                    <i data-lucide="mail" class="w-4 h-4 inline mr-1"></i>
-                    <strong class="text-white">Next Step:</strong> Click 'Mail Proof' after paying to confirm your rank.
-                </p>
-
-                <button id="mail-proof-button" onclick="sendMailProof()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-lg purchase-button shadow-lg mt-4">
-                    Mail Proof & Claim Rank
-                </button>
-            </div>
-
-            <!-- Step 3: Skript/API Integration Info (Hidden by default) -->
-            <div id="step-api" class="space-y-4 hidden pt-6 border-t border-gray-700 mt-6">
-                <h3 class="text-xl font-bold text-purple-400">2. Skript/API Data Capture</h3>
-                <p class="text-gray-400 text-sm">This is the JSON payload your server's Skript/API needs to capture for automated rankup.</p>
-                
-                <div class="bg-gray-800 p-3 rounded-lg text-left text-x
+                    </d
