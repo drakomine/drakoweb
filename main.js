@@ -2,7 +2,7 @@
 const API_ENDPOINT = "http://gc1.lordcloud.ovh:25531/api/rank-purchase";
 const API_KEY = "drakosecretkey"; // Matches the Skript option
 const ADMIN_EMAIL = "drakomine.official@gmail.com";
-const qrCodeImage = "/payment-qr.jpg"; // Placeholder path
+const qrCodeImage = "IMG_20251028_214647.jpg"; // Placeholder path
 
 const ranksData = [
     {
