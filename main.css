@@ -1,0 +1,97 @@
+/* Custom font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #0d1117; /* Dark charcoal/GitHub dark theme */
+    color: #e5e7eb;
+}
+
+/* Custom styles for premium look */
+.rank-card {
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+    background: rgba(17, 24, 39, 0.7);
+    border: 1px solid rgba(31, 41, 55, 1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+.rank-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 30px 40px -10px rgba(0, 0, 0, 0.6), 0 10px 15px -5px rgba(0, 0, 0, 0.4);
+    border-color: #f59e0b;
+}
+.rank-card.active-rank {
+    border-width: 3px;
+    border-color: #ef4444;
+}
+
+/* Gradient for AURA+ */
+.aura-gradient-text {
+    background-image: linear-gradient(135deg, #f59e0b, #ef4444, #8b5cf6);
+}
+
+.purchase-button {
+    transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+}
+.purchase-button:active {
+    transform: scale(0.98);
+}
+
+/* Animation for Coupon */
+@keyframes pulse-shadow {
+    0% { box-shadow: 0 0 5px rgba(251, 191, 36, 0.5); }
+    50% { box-shadow: 0 0 20px rgba(251, 191, 36, 1); }
+    100% { box-shadow: 0 0 5px rgba(251, 191, 36, 0.5); }
+}
+.coupon-pulse {
+    animation: pulse-shadow 2s infinite;
+}
+
+/* --- Mobile Scaling & Responsiveness --- */
+
+/* Ensure the main grid stacks on smaller screens */
+@media (max-width: 768px) {
+    .feature-grid {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+}
+
+/* Modal specific scaling for small screens */
+.modal-content-area {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+.modal-content-area::-webkit-scrollbar {
+    width: 6px;
+    background-color: #1f2937;
+}
+.modal-content-area::-webkit-scrollbar-thumb {
+    background-color: #4b5563;
+    border-radius: 3px;
+}
+
+
+/* --- Custom Platform Selector Styling --- */
+.platform-selector input[type="radio"]:checked + label {
+    background-color: #ef4444; /* Red 500 */
+    border-color: #fca5a5; /* Red 300 */
+    color: white;
+}
+.platform-selector input[type="radio"]:checked + label .icon-color {
+    color: white;
+}
+.platform-selector label {
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: 2px solid #4b5563;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    flex-grow: 1;
+    text-align: center;
+    background-color: #1f2937;
+    color: #9ca3af;
+}
+.platform-selector label:hover {
+    border-color: #ef4444;
+}
