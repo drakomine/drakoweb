@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRAKOMINE - Premium Rank Store</title>
+    <meta name="description" content="Purchase premium ranks for DRAKOMINE Minecraft server. Get VIP, VVIP, or AURA+ status with exclusive perks, extra homes, inventory space, and daily rewards." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #e5e7eb;
+        }
+
+        .rank-card {
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            background: rgba(17, 24, 39, 0.7);
+            border: 1px solid rgba(31, 41, 55, 1);
+            backdrop-filter: blur(5px);
+        }
+        .rank-card:hover {
+            transform: translateY(-5px) scale(1.02); /* Adjusted hover */
+            box-shadow: 0 20px 30px -5px rgba(0, 0, 0, 0.7), 0 5px 10px -2px rgba(0, 0, 0, 0.3);
+            border-color: #f59e0b;
+        }
+        .rank-card.active-rank {
+            border-width: 3px;
+            border-color: #ef4444;
+        }
+
+        .aura-gradient-text {
+            background-image: linear-gradient(135deg, #f59e0b, #ef4444, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        @keyframes pulse-shadow {
+            0% { box-shadow: 0 0 5px rgba(251, 191, 36, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(251, 191, 36, 1); }
+            100% { box-shadow: 0 0 5px rgba(251, 191, 36, 0.5); }
+        }
+        .coupon-pulse {
+            animation: pulse-shadow 2s infinite;
+        }
+
+        .platform-selector input[type="radio"]:checked + label {
+            background-color: #ef4444;
+            border-color: #fca5a5;
+            color: white;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+        }
+        .platform-selector label {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 2px solid #4b5563;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            flex-grow: 1;
+            text-align: center;
+            background-color: #1f2937;
+            color: #9ca3af;
+        }
+        .platform-selector label:hover {
+            border-color: #ef4444;
+        }
+
+        /* Added form input focus style */
+        .form-input-custom:focus {
+            outline: none;
+            border-color: #f59e0b; /* Yellow focus border */
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.5);
+        }
+        
+        /* Loading indicator for API call */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #f59e0b;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+
+    <header class="text-center mb-12">
+        <h1 class="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text aura-gradient-text mb-2 tracking-tighter">
+            DRAKOMINE
+        </h1>
+        <p class="text-lg md:text-xl font-medium text-gray-300 mb-6">"Madness of uniqueness"</p>
+
+        <div class="max-w-md mx-auto p-4 bg-gray-800/80 rounded-xl shadow-lg border border-yellow-700/50 coupon-pulse mb-8">
+            <p class="text-sm font-semibold text-yellow-400 uppercase tracking-widest mb-1">Limited Time Offer</p>
+            <div class="flex items-center justify-center space-x-3">
+                <code class="text-3xl font-mono font-bold text-white bg-gray-900/50 px-4 py-1 rounded-lg">DRAKO</code>
+                <span class="text-xl text-yellow-300">for ₹20 OFF!</span>
+            </div>
+            <p class="text-xs text-gray-500 mt-2">Discount applied automatically at checkout.</p>
+        </div>
+
+        <div class="mt-8 bg-gray-800/70 p-4 rounded-xl shadow-2xl max-w-lg mx-auto border border-gray-700/50 flex flex-col sm:flex-row justify-around items-center space-y-4 sm:space-y-0">
+            <div class="text-center">
+                <p id="purchase-count" class="text-4xl font-black text-yellow-400">0</p>
+                <p class="text-sm text-gray-400 uppercase tracking-widest">Recent Purchases</p>
+            </div>
+            <div class="h-10 w-px bg-gray-600 hidden sm:block"></div>
+            <div class="text-center">
+                <p id="member-count" class="text-4xl font-black text-red-500">0</p>
+                <p class="text-sm text-gray-400 uppercase tracking-widest">Active Members</p>
+            </div>
+        </div>
+        
+        <div class="mt-8 bg-gray-800/70 p-4 rounded-xl shadow-2xl max-w-lg mx-auto border border-red-700/50 flex flex-col sm:flex-row justify-center items-center space-y-3 sm:space-x-8 sm:space-y-0">
+            <div class="text-center flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-red-500 w-6 h-6 mr-3"><path d="M4 17V7a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10M12 21v-4"></path></svg>
+                <div>
+                    <p class="text-sm text-gray-400 uppercase tracking-widest mb-1">Server IP</p>
+                    <code class="text-xl font-mono font-bold text-white select-all">drako.mine.bz</code>
+                </div>
+            </div>
+            <div class="h-8 w-px bg-gray-600 hidden sm:block"></div>
+            <div class="text-center flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-red-500 w-6 h-6 mr-3"><path d="M12 2v6h4"></path><path d="M16 4h4v4h-4zM8 12h4v4h-4zM16 12h4v4h-4zM4 12h4v4h-4zM8 16h4v4h-4zM16 16h4v4h-4zM4 16h4v4h-4zM12 8h4v4h-4zM8 8h4v4h-4zM4 8h4v4h-4z"></path></svg>
+                <div>
+                    <p class="text-sm text-gray-400 uppercase tracking-widest mb-1">Port (Bedrock)</p>
+                    <code class="text-xl font-mono font-bold text-white">25531</code>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main id="ranks-container" class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto"></main>
+    
+    <div id="payment-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50" onclick="if(event.target.id === 'payment-modal') closeModal()">
+        <div class="bg-gray-900 rounded-xl p-6 w-11/12 max-w-md shadow-2xl max-h-[90vh] overflow-y-auto relative">
+            <!-- Close Button -->
+            <button onclick="closeModal()" class="absolute top-3 right-3 text-gray-400 hover:text-white transition duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <div id="modal-step-1"></div>
+            <div id="modal-step-2" class="hidden"></div>
+            <p id="server-message" class="text-sm text-center mt-4 hidden text-red-500"></p>
+        </div>
+    </div>
+
+    <script>
+        // --- UPDATED QR CODE PATH ---
+        const qrCodeImage = "/IMG_20251028_214647.jpg"; 
+        const ranksData = [
+            {
+                name: 'VIP Status', price: 60, description: 'The essential upgrade.', color: 'yellow', isPopular: false, buttonText: 'Buy VIP', featureIconColor: '#facc15',
+                features: [
+                    { text: '🏷️ <strong>VIP Tag</strong> in Discord & Server' },
+                    { text: '🏠 Can set <strong>2 homes</strong> at a time' },
+                    { text: '🎒 Extra inventory <strong>Level 4 (bp)</strong>' },
+                    { text: '🛒 Can have <strong>20 shops</strong> at a time' },
+                    { text: '<span class="text-red-400 font-extrabold">❤️ 3 extra hearts</span>' },
+                    { text: '🧭 Can use <strong>/rtp free</strong>' },
+                    { text: '<span class="text-yellow-400 font-extrabold">💵 $50 Daily Reward</span>' },
+                    { text: '🤝 Good Support' }
+                ]
+            },
+            {
+                name: 'VVIP Status', price: 110, description: 'The full server experience.', color: 'red', isPopular: true, buttonText: 'Buy VVIP', featureIconColor: '#f87171',
+                features: [
+                    { text: '👑 <strong>VVIP Tag</strong> in Discord & Server' },
+                    { text: '🏠 Can set <strong>5 homes</strong> at a time' },
+                    { text: '🎒 Extra inventory <strong>Level 6 (bp)</strong>' },
+                    { text: '🛒 Can have <strong>50 shops</strong> at a time' },
+                    { text: '<span class="text-red-400 font-extrabold text-lg">❤️❤️ 10 extra hearts</span>' },
+                    { text: '<span class="text-green-400 font-extrabold">🧍 Carry Villager</span> in inventory' },
+                    { text: '🧭 Can use <strong>/rtp free</strong>' },
+                    { text: '<span class="text-yellow-400 font-extrabold text-lg">💰 $100 Daily Reward</span>' },
+                    { text: '📞 <strong>Premium Support</strong>' }
+                ]
+            },
+            {
+                name: 'AURA+ Status', price: 170, description: 'Maximum power and convenience.', color: 'purple', isPopular: false, buttonText: 'Buy AURA+', featureIconColor: '#c084fc',
+                features: [
+                    { text: '✨ <strong>AURA+ Tag</strong> in Discord & Server' },
+                    { text: '🏠 Can set <strong>7 homes</strong> at a time' },
+                    { text: '🎒 Extra inventory <strong>Level 6 (bp)</strong>' },
+                    { text: '🛒 Can have <strong>60 shops</strong> at a time' },
+                    { text: '<span class="text-red-500 font-extrabold text-xl">❤️❤️❤️ 20 extra hearts</span>' },
+                    { text: '<span class="text-green-400 font-extrabold">🧍 Carry Villager</span> in inventory' },
+                    { text: '<span class="text-green-500 font-extrabold">🐐 Carry Mobs</span> in inventory' },
+                    { text: '🌙 Exclusive Command: <strong>Night Vision (/nv)</strong>' },
+                    { text: '<span class="text-yellow-400 font-extrabold text-xl">💎 $300 Daily Reward</span>' },
+                    { text: '<span class="text-yellow-300 font-bold">💸 $3,000 Instant</span> cash-in' },
+                    { text: '🧭 Can use <strong>/rtp free</strong>' },
+                    { text: '📞 <strong>Premium Support</strong>' }
+                ]
+            }
+        ];
+
+        let currentModalRank = null;
+        let modalState = { username: '', platform: 'Java', email: '' };
+
+        const renderRanks = () => {
+            document.getElementById('ranks-container').innerHTML = ranksData.map(rank => {
+                const featuresHtml = rank.features.map(f => `<li class="flex items-start"><span class="mr-2 text-green-400 mt-1">✓</span><div>${f.text}</div></li>`).join('');
+                return `
+                    <section class="rank-card rounded-2xl p-6 shadow-xl ${rank.isPopular ? 'active-rank md:scale-105' : ''}">
+                        <div class="text-center mb-6">
+                            ${rank.isPopular ? '<div class="inline-block bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase mb-2">Most Popular</div>' : ''}
+                            <h2 class="${rank.name === 'AURA+ Status' ? 'text-3xl font-bold aura-gradient-text' : 'text-3xl font-bold'}" style="color: ${rank.featureIconColor}">${rank.name}</h2>
+                            <p class="text-base text-gray-400">${rank.description}</p>
+                            <div class="mt-3">
+                                <span class="text-5xl font-black text-white">₹${rank.price}</span>
+                                <span class="text-xl font-medium text-gray-400">/ Month</span>
+                            </div>
+                        </div>
+                        <ul class="space-y-3 text-sm mb-8 list-none p-0">${featuresHtml}</ul>
+                        <button onclick="openModal('${rank.name}')" class="w-full bg-${rank.color}-600 hover:bg-${rank.color}-500 font-bold py-3 rounded-xl text-white transition duration-200">${rank.buttonText}</button>
+                    </section>
+                `;
+            }).join('');
+        };
+
+        window.openModal = (rankName) => {
+            currentModalRank = ranksData.find(r => r.name === rankName);
+            modalState = { username: '', platform: 'Java', email: '' };
+            document.getElementById('server-message').classList.add('hidden');
+            showStep(1);
+            document.getElementById('payment-modal').classList.remove('hidden');
+        };
+
+        window.closeModal = () => {
+            document.getElementById('payment-modal').classList.add('hidden');
+        };
+
+        window.showStep = (step) => {
+            const finalPrice = currentModalRank.price - 20;
+            if (step === 1) {
+                document.getElementById('modal-step-1').innerHTML = `
+                    <h3 class="text-2xl font-bold text-white mb-4 pr-10">Checkout: ${currentModalRank.name}</h3>
+                    <div class="p-3 bg-gray-800 rounded-lg border border-gray-700 mb-4">
+                        <div class="flex justify-between"><span>Original Price:</span><span class="line-through">₹${currentModalRank.price}</span></div>
+                        <div class="flex justify-between text-yellow-400"><span>Discount (DRAKO):</span><span>- ₹20</span></div>
+                        <div class="flex justify-between mt-2 pt-2 border-t border-gray-600 text-xl font-bold text-red-400"><span>Total Payable:</span><span>₹${finalPrice}</span></div>
+                    </div>
+                    <form id="details-form" class="space-y-4">
+                        <input type="text" id="username" placeholder="Minecraft Username" required class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white form-input-custom" value="${modalState.username}"/>
+                        <div class="flex gap-4 platform-selector">
+                            <input type="radio" id="java" name="platform" value="Java" ${modalState.platform === 'Java' ? 'checked' : ''} class="hidden"/>
+                            <label for="java" class="flex-1">Java</label>
+                            <input type="radio" id="bedrock" name="platform" value="Bedrock" ${modalState.platform === 'Bedrock' ? 'checked' : ''} class="hidden"/>
+                            <label for="bedrock" class="flex-1">Bedrock</label>
+                        </div>
+                        <input type="email" id="email" placeholder="Email (Optional, for receipt)" class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white form-input-custom" value="${modalState.email}"/>
+                        <button type="submit" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-xl transition duration-200">Proceed to Payment</button>
+                    </form>
+                `;
+                document.getElementById('details-form').onsubmit = (e) => {
+                    e.preventDefault();
+                    modalState.username = document.getElementById('username').value.trim();
+                    modalState.platform = document.querySelector('input[name="platform"]:checked').value;
+                    modalState.email = document.getElementById('email').value.trim();
+
+                    if (!modalState.username) {
+                        alert('Please enter your Minecraft Username.');
+                        return;
+                    }
+                    showStep(2);
+                };
+                document.getElementById('modal-step-1').classList.remove('hidden');
+                document.getElementById('modal-step-2').classList.add('hidden');
+            } else {
+                document.getElementById('modal-step-2').innerHTML = `
+                    <h3 class="text-2xl font-bold text-white mb-4 text-center pr-10">Scan to Pay</h3>
+                    <p class="text-gray-400 text-center mb-4">Scan the QR code to securely pay <strong>₹${finalPrice}</strong></p>
+                    <div class="p-2 bg-white rounded-lg inline-block border-2 border-red-500 mx-auto block shadow-xl hover:shadow-2xl transition duration-300">
+                        <img src="${qrCodeImage}" alt="Payment QR Code" class="rounded-md w-64 h-64 mx-auto"/>
+                    </div>
+                    <div class="text-sm bg-gray-800 p-3 rounded-lg border border-gray-700 mt-4 space-y-1">
+                        <p class="font-semibold text-yellow-400">Your Order Details:</p>
+                        <p><strong>Username:</strong> <code class="text-white">${modalState.username}</code></p>
+                        <p><strong>Rank:</strong> <code class="text-white">${currentModalRank.name}</code></p>
+                        <p><strong>Platform:</strong> <code class="text-white">${modalState.platform}</code></p>
+                    </div>
+                    <button id="complete-payment-btn" onclick="handlePaymentComplete()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-xl mt-4 transition duration-200 flex items-center justify-center">
+                        I've Paid! Submit Proof via Email
+                    </button>
+                    <button onclick="showStep(1)" class="w-full text-gray-400 hover:text-white py-2 mt-2 transition duration-200">Back to details</button>
+                `;
+                document.getElementById('modal-step-1').classList.add('hidden');
+                document.getElementById('modal-step-2').classList.remove('hidden');
+            }
+        };
+
+        // --- NEW FUNCTION: Handles Skript submission and Email redirect ---
+        window.handlePaymentComplete = async () => {
+            const btn = document.getElementById('complete-payment-btn');
+            const messageEl = document.getElementById('server-message');
+            const finalPrice = currentModalRank.price - 20;
+
+            // Show loading state
+            btn.innerHTML = '<div class="loader"></div> Submitting...';
+            btn.disabled = true;
+            messageEl.classList.add('hidden');
+
+            // 1. Prepare data for Skript server
+            const payload = {
+                username: modalState.username,
+                rank: currentModalRank.name,
+                platform: modalState.platform,
+                price: finalPrice,
+                email: modalState.email,
+                timestamp: new Date().toISOString()
+            };
+
+            // 2. Send data to the assumed Skript endpoint
+            // !!! IMPORTANT: Replace 'http://YOUR_SERVER_IP:PORT/api/rank-purchase' with your actual server endpoint !!!
+            try {
+                const response = await fetch('http://YOUR_SERVER_IP:PORT/api/rank-purchase', { 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    messageEl.textContent = "✅ Server notified. Preparing email for payment proof.";
+                    messageEl.classList.remove('text-red-500');
+                    messageEl.classList.add('text-green-500');
+    
