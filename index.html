@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRAKOMINE - Premium Rank Store</title>
+    <meta name="description" content="Purchase premium ranks for DRAKOMINE Minecraft server. Get VIP, VVIP, or AURA+ status with exclusive perks, extra homes, inventory space, and daily rewards." />
+    <!-- Link to external CSS -->
+    <link rel="stylesheet" href="main.css">
+    <!-- Tailwind is still necessary for classes used directly in the HTML -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+
+    <!-- ======================================================= -->
+    <!-- --- HTML STRUCTURE: HEADER --- -->
+    <!-- ======================================================= -->
+    <header class="text-center mb-12">
+        <h1 class="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text aura-gradient-text mb-2 tracking-tighter">
+            DRAKOMINE
+        </h1>
+        <p class="text-lg md:text-xl font-medium text-gray-300 mb-6">"Madness of uniqueness"</p>
+
+        <div class="max-w-md mx-auto p-4 bg-gray-800/80 rounded-xl shadow-lg border border-yellow-700/50 coupon-pulse mb-8">
+            <p class="text-sm font-semibold text-yellow-400 uppercase tracking-widest mb-1">Limited Time Offer</p>
+            <div class="flex items-center justify-center space-x-3">
+                <code class="text-3xl font-mono font-bold text-white bg-gray-900/50 px-4 py-1 rounded-lg">DRAKO</code>
+                <span class="text-xl text-yellow-300">for ₹20 OFF!</span>
+            </div>
+            <p class="text-xs text-gray-500 mt-2">Discount applied automatically at checkout.</p>
+        </div>
+
+        <div class="mt-8 bg-gray-800/70 p-4 rounded-xl shadow-2xl max-w-lg mx-auto border border-gray-700/50 flex flex-col sm:flex-row justify-around items-center space-y-4 sm:space-y-0">
+            <div class="text-center">
+                <p id="purchase-count" class="text-4xl font-black text-yellow-400">0</p>
+                <p class="text-sm text-gray-400 uppercase tracking-widest">Recent Purchases</p>
+            </div>
+            <div class="h-10 w-px bg-gray-600 hidden sm:block"></div>
+            <div class="text-center">
+                <p id="member-count" class="text-4xl font-black text-red-500">0</p>
+                <p class="text-sm text-gray-400 uppercase tracking-widest">Active Members</p>
+            </div>
+        </div>
+        
+        <div class="mt-8 bg-gray-800/70 p-4 rounded-xl shadow-2xl max-w-lg mx-auto border border-red-700/50 flex flex-col sm:flex-row justify-center items-center space-y-3 sm:space-x-8 sm:space-y-0">
+            <div class="text-center flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-red-500 w-6 h-6 mr-3"><path d="M4 17a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-1.5"></path><path d="M12 22v-3.5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2V22"></path><path d="M12 2h0"></path><path d="M22 17h0"></path></svg>
+                <div>
+                    <p class="text-sm text-gray-400 uppercase tracking-widest mb-1">Server IP</p>
+                    <code class="text-xl font-mono font-bold text-white select-all">drako.mine.bz</code>
+                </div>
+            </div>
+            <div class="h-8 w-px bg-gray-600 hidden sm:block"></div>
+            <div class="text-center flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-red-500 w-6 h-6 mr-3"><path d="M18 6A6 6 0 0 0 6 6c0 7 6 12 6 12s6-5 6-12z"></path></svg>
+                <div>
+                    <p class="text-sm text-gray-400 uppercase tracking-widest mb-1">Port (Bedrock)</p>
+                    <code class="text-xl font-mono font-bold text-white">25531</code>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ======================================================= -->
+    <!-- --- HTML STRUCTURE: MAIN CONTENT AND MODALS --- -->
+    <!-- ======================================================= -->
+    <main id="ranks-container" class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto"></main>
+    
+    <div id="payment-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+        <div class="bg-gray-900 rounded-xl p-6 w-11/12 max-w-md shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div id="modal-step-1"></div>
+            <div id="modal-step-2" class="hidden"></div>
+        </div>
+    </div>
+    
+    <!-- Custom Modal for Messages (replaces alert/confirm) -->
+    <div id="message-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[100]">
+        <div class="bg-gray-800 rounded-xl p-6 w-11/12 max-w-xs shadow-2xl border border-gray-700">
+            <p id="modal-message" class="text-white text-center mb-4"></p>
+            <button onclick="closeMessageModal()" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-2 rounded-lg">OK</button>
+        </div>
+    </div>
+
+    <!-- Link to external JavaScript -->
+    <script src="main.js"></script>
+</body>
+</html>
+
