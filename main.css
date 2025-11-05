@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 body {
+    /* Updated background and text color for a more saturated look */
     font-family: 'Inter', sans-serif;
-    background-color: #0d1117;
+    background-color: #0b0f15; 
     color: #e5e7eb;
 }
 
@@ -9,20 +10,23 @@ body {
     transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s;
     position: relative;
     overflow: hidden;
-    background: rgba(17, 24, 39, 0.7);
+    /* Slightly darker card background */
+    background: rgba(17, 24, 39, 0.85); 
     border: 1px solid rgba(31, 41, 55, 1);
     backdrop-filter: blur(5px);
 }
 .rank-card:hover {
     transform: translateY(-8px) scale(1.03);
-    box-shadow: 0 30px 40px -10px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 30px 40px -10px rgba(0, 0, 0, 0.7);
     border-color: #f59e0b;
 }
+/* Active rank border color updated to red */
 .rank-card.active-rank {
     border-width: 3px;
-    border-color: #ef4444;
+    border-color: #ef4444; 
 }
 
+/* Gradient text for all premium ranks (AURA+, ELITE, SIGMA, GEN-Z) */
 .aura-gradient-text {
     background-image: linear-gradient(135deg, #f59e0b, #ef4444, #8b5cf6);
     -webkit-background-clip: text;
@@ -57,6 +61,34 @@ body {
 .platform-selector label:hover {
     border-color: #ef4444;
 }
+
+/* Add Tailwind utility class colors for new ranks (blue, fuchsia, cyan) */
+/* These are necessary because Tailwind is imported via CDN, and we need to ensure these are available */
+.text-blue-400 { color: #60a5fa; }
+.bg-blue-600 { background-color: #2563eb; }
+.hover\:bg-blue-500:hover { background-color: #3b82f6; }
+
+.text-fuchsia-400 { color: #e879f9; }
+.bg-fuchsia-600 { background-color: #c026d3; }
+.hover\:bg-fuchsia-500:hover { background-color: #d946ef; }
+
+.text-cyan-400 { color: #22d3ee; }
+.bg-cyan-600 { background-color: #0891b2; }
+.hover\:bg-cyan-500:hover { background-color: #06b6d4; }
+
+/* Existing colors for completeness */
+.text-yellow-400 { color: #facc15; }
+.bg-yellow-600 { background-color: #ca8a04; }
+.hover\:bg-yellow-500:hover { background-color: #eab308; }
+
+.text-red-400 { color: #f87171; }
+.bg-red-600 { background-color: #dc2626; }
+.hover\:bg-red-500:hover { background-color: #ef4444; }
+
+.text-purple-400 { color: #c084fc; }
+.bg-purple-600 { background-color: #9333ea; }
+.hover\:bg-purple-500:hover { background-color: #a855f7; }
+
 
 @media (max-width: 768px) {
     .rank-card h2 { font-size: 1.875rem; }
