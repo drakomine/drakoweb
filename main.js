@@ -6,7 +6,7 @@ const qrCodeImage = "IMG_20251028_214647.jpg"; // Placeholder path
 
 const ranksData = [
     {
-        name: 'VIP Status', price: 60, description: 'The essential upgrade.', color: 'yellow', isPopular: false, buttonText: 'Buy VIP', featureIconColor: '#facc15',
+        name: 'VIP', price: 60, description: 'Budget: The essential upgrade.', color: 'yellow', isPopular: false, buttonText: 'Buy VIP', featureIconColor: '#facc15',
         features: [
             { text: '<strong>VIP Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>2 homes</strong> at a time' },
@@ -19,7 +19,7 @@ const ranksData = [
         ]
     },
     {
-        name: 'VVIP Status', price: 110, description: 'The full server experience.', color: 'red', isPopular: true, buttonText: 'Buy VVIP', featureIconColor: '#f87171',
+        name: 'VVIP', price: 110, description: 'Budget: The full server experience.', color: 'red', isPopular: true, buttonText: 'Buy VVIP', featureIconColor: '#f87171',
         features: [
             { text: '<strong>VVIP Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>5 homes</strong> at a time' },
@@ -33,14 +33,14 @@ const ranksData = [
         ]
     },
     {
-        name: 'AURA+ Status', price: 170, description: 'Maximum power and convenience.', color: 'purple', isPopular: false, buttonText: 'Buy AURA+', featureIconColor: '#c084fc',
+        name: 'AURA+', price: 170, description: 'Budget: Maximum power and convenience.', color: 'purple', isPopular: false, buttonText: 'Buy AURA+', featureIconColor: '#c084fc',
         features: [
             { text: '<strong>AURA+ Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>7 homes</strong> at a time' },
             { text: 'Extra inventory <strong>Level 6 (bp)</strong>' },
             { text: 'Can have <strong>60 shops</strong> at a time' },
             { text: 'Massive <strong>20 extra hearts</strong>' },
-            { text: '<strong>All skills max (Level-10)</strong>' }, // New Feature Added
+            { text: '<strong>All skills max (Level-10)</strong>' },
             { text: '<strong>Carry Villager</strong> in inventory' },
             { text: '<strong>Carry Mobs</strong> in inventory' },
             { text: 'Exclusive Command: <strong>Night Vision (/nv)</strong>' },
@@ -50,9 +50,8 @@ const ranksData = [
             { text: '<strong>Premium Support</strong>' }
         ]
     },
-    // --- New Premium Ranks Added Below ---
     {
-        name: 'ELITE Status', price: 390, description: 'Premium power and exclusivity.', color: 'blue', isPopular: false, buttonText: 'Buy ELITE', featureIconColor: '#3b82f6',
+        name: 'ELITE', price: 390, description: 'Premium: Power and exclusivity.', color: 'blue', isPopular: false, buttonText: 'Buy ELITE', featureIconColor: '#3b82f6',
         features: [
             { text: '<strong>ELITE Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>7 homes</strong> at a time' },
@@ -64,13 +63,13 @@ const ranksData = [
             { text: '<strong>Carry Mobs</strong> in inventory' },
             { text: 'Exclusive Command: <strong>Night Vision (/nv)</strong>' },
             { text: '<strong>$300 Daily Reward</strong>' },
-            { text: '<strong>$5,000 Instant</strong> cash-in' }, // Updated Instant Cash
+            { text: '<strong>$5,000 Instant</strong> cash-in' },
             { text: 'Can use <strong>/rtp free</strong>' },
             { text: '<strong>Premium Support</strong>' }
         ]
     },
     {
-        name: 'SIGMA Status', price: 440, description: 'Ultimate power and status.', color: 'fuchsia', isPopular: true, buttonText: 'Buy SIGMA', featureIconColor: '#d946ef',
+        name: 'SIGMA', price: 440, description: 'Premium: Ultimate power and status.', color: 'fuchsia', isPopular: true, buttonText: 'Buy SIGMA', featureIconColor: '#d946ef',
         features: [
             { text: '<strong>SIGMA Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>7 homes</strong> at a time' },
@@ -82,13 +81,13 @@ const ranksData = [
             { text: '<strong>Carry Mobs</strong> in inventory' },
             { text: 'Exclusive Command: <strong>Night Vision (/nv)</strong>' },
             { text: '<strong>$300 Daily Reward</strong>' },
-            { text: '<strong>$10,000 Instant</strong> cash-in' }, // Updated Instant Cash
+            { text: '<strong>$10,000 Instant</strong> cash-in' },
             { text: 'Can use <strong>/rtp free</strong>' },
             { text: '<strong>Premium Support</strong>' }
         ]
     },
     {
-        name: 'GEN-Z Status', price: 490, description: 'The peak of server privilege.', color: 'cyan', isPopular: false, buttonText: 'Buy GEN-Z', featureIconColor: '#06b6d4',
+        name: 'GEN-Z', price: 490, description: 'Premium: The peak of server privilege.', color: 'cyan', isPopular: false, buttonText: 'Buy GEN-Z', featureIconColor: '#06b6d4',
         features: [
             { text: '<strong>GEN-Z Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>7 homes</strong> at a time' },
@@ -100,7 +99,7 @@ const ranksData = [
             { text: '<strong>Carry Mobs</strong> in inventory' },
             { text: 'Exclusive Command: <strong>Night Vision (/nv)</strong>' },
             { text: '<strong>$300 Daily Reward</strong>' },
-            { text: '<strong>$12,000 Instant</strong> cash-in' }, // Updated Instant Cash
+            { text: '<strong>$12,000 Instant</strong> cash-in' },
             { text: 'Can use <strong>/rtp free</strong>' },
             { text: '<strong>Premium Support</strong>' }
         ]
@@ -128,11 +127,15 @@ window.closeMessageModal = () => {
 const renderRanks = () => {
     document.getElementById('ranks-container').innerHTML = ranksData.map(rank => {
         const featuresHtml = rank.features.map(f => `<li class="flex items-start"><span class="mr-2 text-${rank.color}-400">✓</span><div>${f.text}</div></li>`).join('');
+        
+        // Determine if it is a Premium Rank for the Gradient Text
+        const isPremiumRank = ['ELITE', 'SIGMA', 'GEN-Z'].includes(rank.name);
+
         return `
             <section class="rank-card rounded-2xl p-6 shadow-xl ${rank.isPopular ? 'active-rank md:scale-105' : ''}">
                 <div class="text-center mb-6">
                     ${rank.isPopular ? '<div class="inline-block bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase mb-2">Most Popular</div>' : ''}
-                    <h2 class="${rank.name.includes('AURA+') ? 'text-3xl font-bold aura-gradient-text' : 'text-3xl font-bold'}" style="color: ${rank.featureIconColor}">${rank.name}</h2>
+                    <h2 class="${isPremiumRank ? 'text-3xl font-bold aura-gradient-text' : 'text-3xl font-bold'}" style="${!isPremiumRank ? `color: ${rank.featureIconColor}` : ''}">${rank.name}</h2>
                     <p class="text-base text-gray-400">${rank.description}</p>
                     <div class="mt-3">
                         <span class="text-5xl font-black text-white">₹${rank.price}</span>
