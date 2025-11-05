@@ -26,6 +26,23 @@ body {
     border-color: #ef4444; 
 }
 
+/* Updated Popular Badge Styling */
+.popular-badge {
+    position: absolute;
+    top: -1px; /* Align with border */
+    right: -1px; /* Align with border */
+    background-color: #ef4444; /* Red background */
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-bottom-left-radius: 0.5rem;
+    z-index: 10;
+    transform: translateY(0);
+    /* Adding a subtle shadow for depth */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
 /* Gradient text for all premium ranks (AURA+, ELITE, SIGMA, GEN-Z) */
 .aura-gradient-text {
     background-image: linear-gradient(135deg, #f59e0b, #ef4444, #8b5cf6);
@@ -93,4 +110,6 @@ body {
 @media (max-width: 768px) {
     .rank-card h2 { font-size: 1.875rem; }
     .rank-card .text-5xl { font-size: 3rem; }
+}
+
 }
