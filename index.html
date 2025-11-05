@@ -6,20 +6,14 @@
     <title>DRAKOMINE - Premium Rank Store</title>
     <meta name="description" content="Purchase premium ranks for DRAKOMINE Minecraft server. Get VIP, VVIP, or AURA+ status with exclusive perks, extra homes, inventory space, and daily rewards." />
     
-    <!-- Link to external CSS -->
     <link rel="stylesheet" href="main.css">
     
-    <!-- Tailwind is still necessary for classes used directly in the HTML -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Link to external JavaScript -->
     <script src="main.js" defer></script>
 </head>
 <body class="min-h-screen p-4 md:p-8">
 
-    <!-- ======================================================= -->
-    <!-- --- HTML STRUCTURE: HEADER --- -->
-    <!-- ======================================================= -->
     <header class="text-center mb-12">
         <h1 class="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text aura-gradient-text mb-2 tracking-tighter">
             DRAKOMINE
@@ -66,27 +60,19 @@
         </div>
     </header>
 
-    <!-- ======================================================= -->
-    <!-- --- HTML STRUCTURE: MAIN CONTENT AND MODALS --- -->
-    <!-- ======================================================= -->
     <main class="max-w-6xl mx-auto">
         
-        <!-- Budget Ranks Section -->
         <h2 class="text-3xl font-extrabold text-white text-center mt-10 mb-6 py-2 border-b border-t border-gray-700/50 bg-gray-900/50 rounded-lg shadow-xl tracking-wide">
             BUDGET RANKS
         </h2>
-        <!-- Budget Ranks Container: Now 3-column on large screens -->
         <div id="budget-ranks-container" class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 lg:grid-cols-3"></div>
         
-        <!-- Premium Ranks Section -->
         <h2 class="text-3xl font-extrabold text-white text-center mt-10 mb-6 py-2 border-b border-t border-gray-700/50 bg-gray-900/50 rounded-lg shadow-xl tracking-wide">
             PREMIUM RANKS
         </h2>
-        <!-- Premium Ranks Container: Remains 2-4 columns -->
-        <div id="prinuum-ranks-container" class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:grid-cols-3 xl:grid-cols-3"></div>
+        <div id="prinuum-ranks-container" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
     </main>
     
-    <!-- Payment Modal -->
     <div id="payment-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
         <div class="bg-gray-900 rounded-xl p-6 w-11/12 max-w-md shadow-2xl max-h-[90vh] overflow-y-auto relative">
             <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500">✕</button>
@@ -95,7 +81,6 @@
         </div>
     </div>
     
-    <!-- Custom Modal for Messages (replaces alert/confirm) -->
     <div id="message-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[100]">
         <div class="bg-gray-800 rounded-xl p-6 w-11/12 max-w-xs shadow-2xl border border-gray-700">
             <p id="modal-message" class="text-white text-center mb-4"></p>
@@ -103,9 +88,6 @@
         </div>
     </div>
 
-    <!-- ======================================================= -->
-    <!-- --- HTML STRUCTURE: FOOTER --- -->
-    <!-- ======================================================= -->
     <footer class="text-center mt-12 pt-8 border-t border-gray-800/50">
         <p class="text-sm text-gray-500">Need help with a purchase or have questions? Contact us!</p>
         <a href="mailto:drakomine.official@gmail.com" class="text-red-500 hover:text-red-400 font-medium text-sm mt-1 inline-block">drakomine.official@gmail.com</a>
@@ -114,4 +96,3 @@
 
 </body>
 </html>
-
