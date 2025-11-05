@@ -26,30 +26,37 @@ body {
     border-color: #ef4444; 
 }
 
-/* Updated Popular Badge Styling */
-.popular-badge {
-    position: absolute;
-    top: -1px; /* Align with border */
-    right: -1px; /* Align with border */
-    background-color: #ef4444; /* Red background */
-    color: white;
-    font-size: 0.75rem;
-    font-weight: 700;
-    padding: 0.5rem 1rem;
-    border-bottom-left-radius: 0.5rem;
-    z-index: 10;
-    transform: translateY(0);
-    /* Adding a subtle shadow for depth */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-}
+/* --- NEW HEAVY GRADIENTS FOR PREMIUM RANKS --- */
 
-/* Gradient text for all premium ranks (AURA+, ELITE, SIGMA, GEN-Z) */
-.aura-gradient-text {
-    background-image: linear-gradient(135deg, #f59e0b, #ef4444, #8b5cf6);
+/* Base class for gradient text (applies background-clip and color: transparent) */
+.gradient-text {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
 }
+
+/* 1. AURA+ Gradient (Gold to Intense Purple) */
+.gradient-aura-plus {
+    background-image: linear-gradient(135deg, #fcd34d, #f59e0b, #a78bfa, #8b5cf6);
+}
+
+/* 2. ELITE Gradient (Deep Blue to Electric Cyan) */
+.gradient-elite {
+    background-image: linear-gradient(135deg, #3b82f6, #06b6d4);
+}
+
+/* 3. SIGMA Gradient (Intense Fuchsia to Vibrant Red) */
+.gradient-sigma {
+    background-image: linear-gradient(135deg, #d946ef, #ef4444);
+}
+
+/* 4. GEN-Z Gradient (Electric Cyan to Neon Green/Lime) */
+.gradient-gen-z {
+    background-image: linear-gradient(135deg, #06b6d4, #84cc16);
+}
+
+/* --- END OF NEW HEAVY GRADIENTS --- */
+
 
 @keyframes pulse-shadow {
     0%, 100% { box-shadow: 0 0 5px rgba(251, 191, 36, 0.5); }
@@ -110,6 +117,4 @@ body {
 @media (max-width: 768px) {
     .rank-card h2 { font-size: 1.875rem; }
     .rank-card .text-5xl { font-size: 3rem; }
-}
-
 }
