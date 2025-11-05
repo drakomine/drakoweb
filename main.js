@@ -6,7 +6,7 @@ const qrCodeImage = "IMG_20251028_214647.jpg"; // Placeholder path
 
 const ranksData = [
     {
-        name: 'VIP', price: 60, description: 'Budget: The essential upgrade.', type: 'budget', color: 'yellow', isPopular: false, buttonText: 'Buy VIP', featureIconColor: '#facc15',
+        name: 'VIP', price: 60, description: 'The essential upgrade.', type: 'budget', color: 'yellow', isPopular: false, buttonText: 'Buy VIP', featureIconColor: '#facc15',
         features: [
             { text: '<strong>VIP Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>2 homes</strong> at a time' },
@@ -19,7 +19,7 @@ const ranksData = [
         ]
     },
     {
-        name: 'VVIP', price: 110, description: 'Budget: The full server experience.', type: 'budget', color: 'red', isPopular: true, buttonText: 'Buy VVIP', featureIconColor: '#f87171',
+        name: 'VVIP', price: 110, description: 'The full server experience.', type: 'budget', color: 'red', isPopular: true, buttonText: 'Buy VVIP', featureIconColor: '#f87171',
         features: [
             { text: '<strong>VVIP Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>5 homes</strong> at a time' },
@@ -33,7 +33,7 @@ const ranksData = [
         ]
     },
     {
-        name: 'AURA+', price: 170, description: 'Budget: Maximum power and convenience.', type: 'budget', color: 'purple', isPopular: false, buttonText: 'Buy AURA+', featureIconColor: '#c084fc',
+        name: 'AURA+', price: 170, description: 'Maximum power and convenience.', type: 'budget', color: 'purple', isPopular: false, buttonText: 'Buy AURA+', featureIconColor: '#c084fc',
         features: [
             { text: '<strong>AURA+ Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>7 homes</strong> at a time' },
@@ -51,7 +51,7 @@ const ranksData = [
         ]
     },
     {
-        name: 'ELITE', price: 390, description: 'Premium: Power and exclusivity.', type: 'prinuum', color: 'blue', isPopular: false, buttonText: 'Buy ELITE', featureIconColor: '#60a5fa', // Use custom classes below
+        name: 'ELITE', price: 390, description: 'Power and exclusivity.', type: 'prinuum', color: 'blue', isPopular: false, buttonText: 'Buy ELITE', featureIconColor: '#60a5fa', // Use custom classes below
         features: [
             { text: '<strong>ELITE Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>7 homes</strong> at a time' },
@@ -69,7 +69,7 @@ const ranksData = [
         ]
     },
     {
-        name: 'SIGMA', price: 440, description: 'Premium: Ultimate power and status.', type: 'prinuum', color: 'fuchsia', isPopular: true, buttonText: 'Buy SIGMA', featureIconColor: '#e879f9', // Use custom classes below
+        name: 'SIGMA', price: 440, description: 'Ultimate power and status.', type: 'prinuum', color: 'fuchsia', isPopular: true, buttonText: 'Buy SIGMA', featureIconColor: '#e879f9', // Use custom classes below
         features: [
             { text: '<strong>SIGMA Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>7 homes</strong> at a time' },
@@ -87,7 +87,7 @@ const ranksData = [
         ]
     },
     {
-        name: 'GEN-Z', price: 490, description: 'Premium: The peak of server privilege.', type: 'prinuum', color: 'cyan', isPopular: false, buttonText: 'Buy GEN-Z', featureIconColor: '#22d3ee', // Use custom classes below
+        name: 'GEN-Z', price: 490, description: 'The peak of server privilege.', type: 'prinuum', color: 'cyan', isPopular: false, buttonText: 'Buy GEN-Z', featureIconColor: '#22d3ee', // Use custom classes below
         features: [
             { text: '<strong>GEN-Z Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>7 homes</strong> at a time' },
