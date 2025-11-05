@@ -6,6 +6,11 @@ body {
     color: #e5e7eb;
 }
 
+/* Added missing gradient for the main H1 title */
+.aura-gradient-text {
+    background-image: linear-gradient(90deg, #fcd34d, #f59e0b, #ef4444);
+}
+
 .rank-card {
     transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s;
     position: relative;
@@ -56,7 +61,6 @@ body {
 }
 
 /* --- END OF NEW HEAVY GRADIENTS --- */
-
 
 @keyframes pulse-shadow {
     0%, 100% { box-shadow: 0 0 5px rgba(251, 191, 36, 0.5); }
