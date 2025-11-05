@@ -6,7 +6,7 @@ const qrCodeImage = "IMG_20251028_214647.jpg"; // Placeholder path
 
 const ranksData = [
     {
-        name: 'VIP', price: 60, description: 'Budget: The essential upgrade.', color: 'yellow', isPopular: false, buttonText: 'Buy VIP', featureIconColor: '#facc15', type: 'budget', // Added rank type
+        name: 'VIP', price: 60, description: 'Budget: The essential upgrade.', type: 'budget', color: 'yellow', isPopular: false, buttonText: 'Buy VIP', featureIconColor: '#facc15',
         features: [
             { text: '<strong>VIP Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>2 homes</strong> at a time' },
@@ -19,7 +19,7 @@ const ranksData = [
         ]
     },
     {
-        name: 'VVIP', price: 110, description: 'Budget: The full server experience.', color: 'red', isPopular: true, buttonText: 'Buy VVIP', featureIconColor: '#f87171', type: 'budget', // Added rank type
+        name: 'VVIP', price: 110, description: 'Budget: The full server experience.', type: 'budget', color: 'red', isPopular: true, buttonText: 'Buy VVIP', featureIconColor: '#f87171',
         features: [
             { text: '<strong>VVIP Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>5 homes</strong> at a time' },
@@ -33,7 +33,7 @@ const ranksData = [
         ]
     },
     {
-        name: 'AURA+', price: 170, description: 'Budget: Maximum power and convenience.', color: 'purple', isPopular: false, buttonText: 'Buy AURA+', featureIconColor: '#c084fc', type: 'budget', // Added rank type
+        name: 'AURA+', price: 170, description: 'Budget: Maximum power and convenience.', type: 'budget', color: 'purple', isPopular: false, buttonText: 'Buy AURA+', featureIconColor: '#c084fc',
         features: [
             { text: '<strong>AURA+ Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>7 homes</strong> at a time' },
@@ -51,7 +51,7 @@ const ranksData = [
         ]
     },
     {
-        name: 'ELITE', price: 390, description: 'Premium: Power and exclusivity.', color: 'blue', isPopular: false, buttonText: 'Buy ELITE', featureIconColor: '#3b82f6', type: 'premium', // Added rank type
+        name: 'ELITE', price: 390, description: 'Premium: Power and exclusivity.', type: 'prinuum', color: 'blue', isPopular: false, buttonText: 'Buy ELITE', featureIconColor: '#60a5fa', // Use custom classes below
         features: [
             { text: '<strong>ELITE Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>7 homes</strong> at a time' },
@@ -69,7 +69,7 @@ const ranksData = [
         ]
     },
     {
-        name: 'SIGMA', price: 440, description: 'Premium: Ultimate power and status.', color: 'fuchsia', isPopular: true, buttonText: 'Buy SIGMA', featureIconColor: '#d946ef', type: 'premium', // Added rank type
+        name: 'SIGMA', price: 440, description: 'Premium: Ultimate power and status.', type: 'prinuum', color: 'fuchsia', isPopular: true, buttonText: 'Buy SIGMA', featureIconColor: '#e879f9', // Use custom classes below
         features: [
             { text: '<strong>SIGMA Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>7 homes</strong> at a time' },
@@ -87,7 +87,7 @@ const ranksData = [
         ]
     },
     {
-        name: 'GEN-Z', price: 490, description: 'Premium: The peak of server privilege.', color: 'cyan', isPopular: false, buttonText: 'Buy GEN-Z', featureIconColor: '#06b6d4', type: 'premium', // Added rank type
+        name: 'GEN-Z', price: 490, description: 'Premium: The peak of server privilege.', type: 'prinuum', color: 'cyan', isPopular: false, buttonText: 'Buy GEN-Z', featureIconColor: '#22d3ee', // Use custom classes below
         features: [
             { text: '<strong>GEN-Z Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>7 homes</strong> at a time' },
@@ -125,39 +125,39 @@ window.closeMessageModal = () => {
 // --- Main Logic Functions ---
 
 const renderRanks = () => {
-    const budgetRanks = ranksData.filter(rank => rank.type === 'budget');
-    const premiumRanks = ranksData.filter(rank => rank.type === 'premium');
-    
-    // Function to generate HTML for a set of ranks
-    const generateRanksHtml = (ranks) => {
-        return ranks.map(rank => {
-            const featuresHtml = rank.features.map(f => `<li class="flex items-start"><span class="mr-2 text-${rank.color}-400">✓</span><div>${f.text}</div></li>`).join('');
-            
-            // Determine if it is a Premium Rank for the Gradient Text
-            const isPremiumRank = rank.type === 'premium'; // Use the new type property
+    const budgetRanks = ranksData.filter(r => r.type === 'budget');
+    const prinuumRanks = ranksData.filter(r => r.type === 'prinuum');
 
-            return `
-                <section class="rank-card rounded-2xl p-6 shadow-xl ${rank.isPopular ? 'active-rank md:scale-105' : ''}">
-                    <!-- Using the custom CSS class 'popular-badge' -->
-                    ${rank.isPopular ? '<div class="popular-badge">MOST POPULAR</div>' : ''}
-                    <div class="text-center mb-6">
-                        <h2 class="${isPremiumRank ? 'text-3xl font-bold aura-gradient-text' : 'text-3xl font-bold'}" style="${!isPremiumRank ? `color: ${rank.featureIconColor}` : ''}">${rank.name}</h2>
-                        <p class="text-base text-gray-400">${rank.description}</p>
-                        <div class="mt-3">
-                            <span class="text-5xl font-black text-white">₹${rank.price}</span>
-                            <span class="text-xl font-medium text-gray-400">/ Month</span>
-                        </div>
-                    </div>
-                    <ul class="space-y-3 text-sm mb-8 list-none p-0">${featuresHtml}</ul>
-                    <button onclick="openModal('${rank.name}')" class="w-full bg-${rank.color}-600 hover:bg-${rank.color}-500 font-bold py-3 rounded-xl text-white">${rank.buttonText}</button>
-                </section>
-            `;
+    const renderCard = (rank) => {
+        const featuresHtml = rank.features.map(f => {
+            const iconColor = rank.type === 'prinuum' ? rank.name.toLowerCase() : rank.color;
+            return `<li class="flex items-start"><span class="mr-2 text-${iconColor}-400">✓</span><div>${f.text}</div></li>`;
         }).join('');
+        
+        // Custom classes for Prinuum Ranks
+        const gradientClass = rank.type === 'prinuum' ? `${rank.name.toLowerCase()}-gradient-text` : '';
+        const buttonClass = rank.type === 'prinuum' ? `${rank.name.toLowerCase()}-button` : `bg-${rank.color}-600 hover:bg-${rank.color}-500`;
+
+        return `
+            <section class="rank-card rounded-2xl p-6 shadow-xl ${rank.isPopular ? 'active-rank md:scale-105' : ''}">
+                <div class="text-center mb-6">
+                    ${rank.isPopular ? '<div class="inline-block bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase mb-2">Most Popular</div>' : ''}
+                    <h2 class="text-3xl font-bold ${gradientClass}" style="${rank.type !== 'prinuum' ? `color: ${rank.featureIconColor}` : ''}">${rank.name}</h2>
+                    <p class="text-base text-gray-400">${rank.description}</p>
+                    <div class="mt-3">
+                        <span class="text-5xl font-black text-white">₹${rank.price}</span>
+                        <span class="text-xl font-medium text-gray-400">/ Month</span>
+                    </div>
+                </div>
+                <ul class="space-y-3 text-sm mb-8 list-none p-0">${featuresHtml}</ul>
+                <button onclick="openModal('${rank.name}')" class="w-full ${buttonClass} font-bold py-3 rounded-xl text-white">${rank.buttonText}</button>
+            </section>
+        `;
     };
 
-    // Render into the new containers
-    document.getElementById('budget-ranks-container').innerHTML = generateRanksHtml(budgetRanks);
-    document.getElementById('premium-ranks-container').innerHTML = generateRanksHtml(premiumRanks);
+    // Render into the new separate containers
+    document.getElementById('budget-ranks-container').innerHTML = budgetRanks.map(renderCard).join('');
+    document.getElementById('prinuum-ranks-container').innerHTML = prinuumRanks.map(renderCard).join('');
 };
 
 window.openModal = (rankName) => {
@@ -172,14 +172,17 @@ window.closeModal = () => {
 };
 
 window.showStep = (step) => {
-    const finalPrice = currentModalRank.price - 20;
+    // Discount is applied only if the final price is greater than 20
+    const discount = currentModalRank.price > 20 ? 20 : 0;
+    const finalPrice = currentModalRank.price - discount;
+
     if (step === 1) {
         document.getElementById('modal-step-1').innerHTML = `
             <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500">✕</button>
             <h3 class="text-2xl font-bold text-white mb-4">Checkout: ${currentModalRank.name}</h3>
             <div class="p-3 bg-gray-800 rounded-lg border border-gray-700 mb-4">
                 <div class="flex justify-between"><span>Original Price:</span><span class="line-through">₹${currentModalRank.price}</span></div>
-                <div class="flex justify-between text-yellow-400"><span>Discount (DRAKO):</span><span>- ₹20</span></div>
+                <div class="flex justify-between text-yellow-400"><span>Discount (DRAKO):</span><span class="text-yellow-400">- ₹${discount}</span></div>
                 <div class="flex justify-between mt-2 pt-2 border-t border-gray-600 text-xl font-bold"><span>Total:</span><span>₹${finalPrice}</span></div>
             </div>
             <form id="details-form" class="space-y-4">
@@ -190,7 +193,7 @@ window.showStep = (step) => {
                     <input type="radio" id="bedrock" name="platform" value="Bedrock" class="hidden"/>
                     <label for="bedrock" class="flex-1">Bedrock</label>
                 </div>
-                <input type="email" id="email" placeholder="Email (Optional, for updates)" class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400"/>
+                <input type="email" id="email" placeholder="Email (Optional)" class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400"/>
                 <button type="submit" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-xl">Proceed to Payment</button>
             </form>
         `;
@@ -233,7 +236,8 @@ window.showStep = (step) => {
 
 /** Sends the purchase data to the Skript API endpoint */
 const sendRankConfirmation = async () => {
-    const finalPrice = currentModalRank.price - 20;
+    const discount = currentModalRank.price > 20 ? 20 : 0;
+    const finalPrice = currentModalRank.price - discount;
 
     const payload = {
         username: modalState.username,
@@ -263,8 +267,6 @@ const sendRankConfirmation = async () => {
         }
     } catch (error) {
         console.error('Network Error connecting to Skript API:', error);
-        // Do not block the next step (email redirect) even if API fails.
-        // The message modal here is sufficient warning.
         showMessageModal('Warning: Could not instantly connect to the server API. The purchase details have been prepared for email submission (the next step).');
     }
 };
@@ -285,8 +287,7 @@ window.handleConfirmationAndRedirect = () => {
     }, 50);
 
     closeModal();
-    // Updated success message for better clarity
-    showMessageModal("Purchase initiated! Please check the server and look for the email window that just opened to submit your payment screenshot for quick approval.");
+    showMessageModal('Purchase details submitted! Check your server for rank approval. Please also attach your payment screenshot to the email client that just opened.');
 };
 
 document.getElementById('payment-modal').addEventListener('click', (e) => {
