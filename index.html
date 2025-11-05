@@ -5,10 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DRAKOMINE - Premium Rank Store</title>
     <meta name="description" content="Purchase premium ranks for DRAKOMINE Minecraft server. Get VIP, VVIP, or AURA+ status with exclusive perks, extra homes, inventory space, and daily rewards." />
+    
     <!-- Link to external CSS -->
     <link rel="stylesheet" href="main.css">
+    
     <!-- Tailwind is still necessary for classes used directly in the HTML -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Link to external JavaScript -->
+    <script src="main.js" defer></script>
 </head>
 <body class="min-h-screen p-4 md:p-8">
 
@@ -71,18 +76,20 @@
             BUDGET RANKS
         </h2>
         <!-- Budget Ranks Container: Stacks vertically on mobile, 3-column on desktop -->
-        <div id="budget-ranks-container" class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12"></div>
+        <div id="budget-ranks-container" class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 lg:grid-cols-2 xl:grid-cols-2"></div>
         
-        <!-- Prinuum Ranks Section -->
+        <!-- Premium Ranks Section (Corrected spelling in visible text) -->
         <h2 class="text-3xl font-extrabold text-white text-center mt-10 mb-6 py-2 border-b border-t border-gray-700/50 bg-gray-900/50 rounded-lg shadow-xl tracking-wide">
-            PRINUUM RANKS
+            PREMIUM RANKS
         </h2>
-        <!-- Prinuum Ranks Container: Stacks vertically on mobile, 3-column on desktop -->
-        <div id="prinuum-ranks-container" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+        <!-- Premium Ranks Container -->
+        <div id="prinuum-ranks-container" class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:grid-cols-4 xl:grid-cols-4"></div>
     </main>
     
+    <!-- Payment Modal -->
     <div id="payment-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-        <div class="bg-gray-900 rounded-xl p-6 w-11/12 max-w-md shadow-2xl max-h-[90vh] overflow-y-auto">
+        <div class="bg-gray-900 rounded-xl p-6 w-11/12 max-w-md shadow-2xl max-h-[90vh] overflow-y-auto relative">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500">✕</button>
             <div id="modal-step-1"></div>
             <div id="modal-step-2" class="hidden"></div>
         </div>
@@ -105,9 +112,6 @@
         <p class="text-xs text-gray-600 mt-4">&copy; 2025 DRAKOMINE. All rights reserved.</p>
     </footer>
 
-
-    <!-- Link to external JavaScript -->
-    <script src="main.js"></script>
 </body>
 </html>
 
