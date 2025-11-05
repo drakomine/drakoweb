@@ -120,7 +120,7 @@ const showMessageModal = (message) => {
 
 /** Closes the custom message modal */
 window.closeMessageModal = () => {
-    document.getElementById('message-modal').classList.add('hidden');
+    document.getElementById('modal-message').classList.add('hidden');
 };
 
 /** Closes the payment modal */
@@ -174,12 +174,13 @@ const generateRankHTML = (rank) => {
     `;
 }
 
-// --- Main Logic Functions (FIXED to use two containers) ---
+// --- Main Logic Functions (FIXED for Budget Ranks layout) ---
 
 const renderRanks = () => {
-    // 1. Split the ranks data: Budget (VIP, VVIP) and Premium (AURA+, ELITE, SIGMA, GEN-Z)
-    const budgetRanks = ranksData.slice(0, 2); 
-    const premiumRanks = ranksData.slice(2); 
+    // 1. Split the ranks data: Budget (VIP, VVIP, AURA+) and Premium (ELITE, SIGMA, GEN-Z)
+    // The first 3 ranks are Budget Ranks, the rest are Premium.
+    const budgetRanks = ranksData.slice(0, 3); 
+    const premiumRanks = ranksData.slice(3); 
 
     // 2. Get the correct container elements
     const budgetContainer = document.getElementById('budget-ranks-container');
