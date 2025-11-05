@@ -6,7 +6,7 @@ const qrCodeImage = "IMG_20251028_214647.jpg"; // Placeholder path
 
 const ranksData = [
     {
-        name: 'VIP', price: 60, description: 'The essential upgrade.', type: 'budget', color: 'yellow', isPopular: false, buttonText: 'Buy VIP', featureIconColor: '#facc15',
+        name: 'VIP', price: 60, description: 'The essential upgrade.', color: 'yellow', isPopular: false, buttonText: 'Buy VIP', featureIconColor: '#facc15',
         features: [
             { text: '<strong>VIP Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>2 homes</strong> at a time' },
@@ -19,7 +19,7 @@ const ranksData = [
         ]
     },
     {
-        name: 'VVIP', price: 110, description: 'The full server experience.', type: 'budget', color: 'red', isPopular: true, buttonText: 'Buy VVIP', featureIconColor: '#f87171',
+        name: 'VVIP', price: 110, description: 'The full server experience.', color: 'red', isPopular: true, buttonText: 'Buy VVIP', featureIconColor: '#f87171',
         features: [
             { text: '<strong>VVIP Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>5 homes</strong> at a time' },
@@ -33,7 +33,7 @@ const ranksData = [
         ]
     },
     {
-        name: 'AURA+', price: 170, description: 'Maximum power and convenience.', type: 'budget', color: 'purple', isPopular: false, buttonText: 'Buy AURA+', featureIconColor: '#c084fc',
+        name: 'AURA+', price: 170, description: 'Maximum power and convenience.', color: 'purple', isPopular: false, buttonText: 'Buy AURA+', featureIconColor: '#c084fc',
         features: [
             { text: '<strong>AURA+ Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>7 homes</strong> at a time' },
@@ -51,7 +51,7 @@ const ranksData = [
         ]
     },
     {
-        name: 'ELITE', price: 390, description: 'Power and exclusivity.', type: 'prinuum', color: 'blue', isPopular: false, buttonText: 'Buy ELITE', featureIconColor: '#60a5fa', // Use custom classes below
+        name: 'ELITE', price: 390, description: 'Power and exclusivity.', color: 'blue', isPopular: false, buttonText: 'Buy ELITE', featureIconColor: '#3b82f6',
         features: [
             { text: '<strong>ELITE Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>7 homes</strong> at a time' },
@@ -69,7 +69,7 @@ const ranksData = [
         ]
     },
     {
-        name: 'SIGMA', price: 440, description: 'Ultimate power and status.', type: 'prinuum', color: 'fuchsia', isPopular: true, buttonText: 'Buy SIGMA', featureIconColor: '#e879f9', // Use custom classes below
+        name: 'SIGMA', price: 440, description: 'Ultimate power and status.', color: 'fuchsia', isPopular: true, buttonText: 'Buy SIGMA', featureIconColor: '#d946ef',
         features: [
             { text: '<strong>SIGMA Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>7 homes</strong> at a time' },
@@ -87,7 +87,7 @@ const ranksData = [
         ]
     },
     {
-        name: 'GEN-Z', price: 490, description: 'The peak of server privilege.', type: 'prinuum', color: 'cyan', isPopular: false, buttonText: 'Buy GEN-Z', featureIconColor: '#22d3ee', // Use custom classes below
+        name: 'GEN-Z', price: 490, description: 'The peak of server privilege.', color: 'cyan', isPopular: false, buttonText: 'Buy GEN-Z', featureIconColor: '#06b6d4',
         features: [
             { text: '<strong>GEN-Z Tag</strong> in Discord & Server' },
             { text: 'Can set <strong>7 homes</strong> at a time' },
@@ -125,24 +125,40 @@ window.closeMessageModal = () => {
 // --- Main Logic Functions ---
 
 const renderRanks = () => {
-    const budgetRanks = ranksData.filter(r => r.type === 'budget');
-    const prinuumRanks = ranksData.filter(r => r.type === 'prinuum');
-
-    const renderCard = (rank) => {
-        const featuresHtml = rank.features.map(f => {
-            const iconColor = rank.type === 'prinuum' ? rank.name.toLowerCase() : rank.color;
-            return `<li class="flex items-start"><span class="mr-2 text-${iconColor}-400">✓</span><div>${f.text}</div></li>`;
-        }).join('');
+    document.getElementById('ranks-container').innerHTML = ranksData.map(rank => {
+        const featuresHtml = rank.features.map(f => `<li class="flex items-start"><span class="mr-2 text-${rank.color}-400">✓</span><div>${f.text}</div></li>`).join('');
         
-        // Custom classes for Prinuum Ranks
-        const gradientClass = rank.type === 'prinuum' ? `${rank.name.toLowerCase()}-gradient-text` : '';
-        const buttonClass = rank.type === 'prinuum' ? `${rank.name.toLowerCase()}-button` : `bg-${rank.color}-600 hover:bg-${rank.color}-500`;
+        // Determine the specific gradient class for the title
+        let titleClasses = 'text-3xl font-bold';
+        switch (rank.name) {
+            case 'AURA+':
+                titleClasses += ' gradient-text gradient-aura-plus';
+                break;
+            case 'ELITE':
+                titleClasses += ' gradient-text gradient-elite';
+                break;
+            case 'SIGMA':
+                titleClasses += ' gradient-text gradient-sigma';
+                break;
+            case 'GEN-Z':
+                titleClasses += ' gradient-text gradient-gen-z';
+                break;
+            default:
+                // For VIP/VVIP, use the standard color
+                titleClasses += ' ' + (rank.featureIconColor ? '' : '');
+                break;
+        }
+
+        // Apply a custom color style for non-gradient ranks (VIP/VVIP)
+        const customColorStyle = !titleClasses.includes('gradient-text') && rank.featureIconColor 
+                                 ? `style="color: ${rank.featureIconColor}"` 
+                                 : '';
 
         return `
             <section class="rank-card rounded-2xl p-6 shadow-xl ${rank.isPopular ? 'active-rank md:scale-105' : ''}">
                 <div class="text-center mb-6">
                     ${rank.isPopular ? '<div class="inline-block bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase mb-2">Most Popular</div>' : ''}
-                    <h2 class="text-3xl font-bold ${gradientClass}" style="${rank.type !== 'prinuum' ? `color: ${rank.featureIconColor}` : ''}">${rank.name}</h2>
+                    <h2 class="${titleClasses}" ${customColorStyle}>${rank.name}</h2>
                     <p class="text-base text-gray-400">${rank.description}</p>
                     <div class="mt-3">
                         <span class="text-5xl font-black text-white">₹${rank.price}</span>
@@ -150,14 +166,10 @@ const renderRanks = () => {
                     </div>
                 </div>
                 <ul class="space-y-3 text-sm mb-8 list-none p-0">${featuresHtml}</ul>
-                <button onclick="openModal('${rank.name}')" class="w-full ${buttonClass} font-bold py-3 rounded-xl text-white">${rank.buttonText}</button>
+                <button onclick="openModal('${rank.name}')" class="w-full bg-${rank.color}-600 hover:bg-${rank.color}-500 font-bold py-3 rounded-xl text-white">${rank.buttonText}</button>
             </section>
         `;
-    };
-
-    // Render into the new separate containers
-    document.getElementById('budget-ranks-container').innerHTML = budgetRanks.map(renderCard).join('');
-    document.getElementById('prinuum-ranks-container').innerHTML = prinuumRanks.map(renderCard).join('');
+    }).join('');
 };
 
 window.openModal = (rankName) => {
@@ -172,17 +184,14 @@ window.closeModal = () => {
 };
 
 window.showStep = (step) => {
-    // Discount is applied only if the final price is greater than 20
-    const discount = currentModalRank.price > 20 ? 20 : 0;
-    const finalPrice = currentModalRank.price - discount;
-
+    const finalPrice = currentModalRank.price - 20;
     if (step === 1) {
         document.getElementById('modal-step-1').innerHTML = `
             <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500">✕</button>
             <h3 class="text-2xl font-bold text-white mb-4">Checkout: ${currentModalRank.name}</h3>
             <div class="p-3 bg-gray-800 rounded-lg border border-gray-700 mb-4">
                 <div class="flex justify-between"><span>Original Price:</span><span class="line-through">₹${currentModalRank.price}</span></div>
-                <div class="flex justify-between text-yellow-400"><span>Discount (DRAKO):</span><span class="text-yellow-400">- ₹${discount}</span></div>
+                <div class="flex justify-between text-yellow-400"><span>Discount (DRAKO):</span><span>- ₹20</span></div>
                 <div class="flex justify-between mt-2 pt-2 border-t border-gray-600 text-xl font-bold"><span>Total:</span><span>₹${finalPrice}</span></div>
             </div>
             <form id="details-form" class="space-y-4">
@@ -236,8 +245,7 @@ window.showStep = (step) => {
 
 /** Sends the purchase data to the Skript API endpoint */
 const sendRankConfirmation = async () => {
-    const discount = currentModalRank.price > 20 ? 20 : 0;
-    const finalPrice = currentModalRank.price - discount;
+    const finalPrice = currentModalRank.price - 20;
 
     const payload = {
         username: modalState.username,
