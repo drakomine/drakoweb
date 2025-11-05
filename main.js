@@ -40,11 +40,67 @@ const ranksData = [
             { text: 'Extra inventory <strong>Level 6 (bp)</strong>' },
             { text: 'Can have <strong>60 shops</strong> at a time' },
             { text: 'Massive <strong>20 extra hearts</strong>' },
+            { text: '<strong>All skills max (Level-10)</strong>' }, // New Feature Added
             { text: '<strong>Carry Villager</strong> in inventory' },
             { text: '<strong>Carry Mobs</strong> in inventory' },
             { text: 'Exclusive Command: <strong>Night Vision (/nv)</strong>' },
             { text: '<strong>$300 Daily Reward</strong>' },
             { text: '<strong>$3,000 Instant</strong> cash-in' },
+            { text: 'Can use <strong>/rtp free</strong>' },
+            { text: '<strong>Premium Support</strong>' }
+        ]
+    },
+    // --- New Premium Ranks Added Below ---
+    {
+        name: 'ELITE Status', price: 390, description: 'Premium power and exclusivity.', color: 'blue', isPopular: false, buttonText: 'Buy ELITE', featureIconColor: '#3b82f6',
+        features: [
+            { text: '<strong>ELITE Tag</strong> in Discord & Server' },
+            { text: 'Can set <strong>7 homes</strong> at a time' },
+            { text: 'Extra inventory <strong>Level 6 (bp)</strong>' },
+            { text: 'Can have <strong>60 shops</strong> at a time' },
+            { text: 'Massive <strong>20 extra hearts</strong>' },
+            { text: '<strong>All skills max (Level-10)</strong>' },
+            { text: '<strong>Carry Villager</strong> in inventory' },
+            { text: '<strong>Carry Mobs</strong> in inventory' },
+            { text: 'Exclusive Command: <strong>Night Vision (/nv)</strong>' },
+            { text: '<strong>$300 Daily Reward</strong>' },
+            { text: '<strong>$5,000 Instant</strong> cash-in' }, // Updated Instant Cash
+            { text: 'Can use <strong>/rtp free</strong>' },
+            { text: '<strong>Premium Support</strong>' }
+        ]
+    },
+    {
+        name: 'SIGMA Status', price: 440, description: 'Ultimate power and status.', color: 'fuchsia', isPopular: true, buttonText: 'Buy SIGMA', featureIconColor: '#d946ef',
+        features: [
+            { text: '<strong>SIGMA Tag</strong> in Discord & Server' },
+            { text: 'Can set <strong>7 homes</strong> at a time' },
+            { text: 'Extra inventory <strong>Level 6 (bp)</strong>' },
+            { text: 'Can have <strong>60 shops</strong> at a time' },
+            { text: 'Massive <strong>20 extra hearts</strong>' },
+            { text: '<strong>All skills max (Level-10)</strong>' },
+            { text: '<strong>Carry Villager</strong> in inventory' },
+            { text: '<strong>Carry Mobs</strong> in inventory' },
+            { text: 'Exclusive Command: <strong>Night Vision (/nv)</strong>' },
+            { text: '<strong>$300 Daily Reward</strong>' },
+            { text: '<strong>$10,000 Instant</strong> cash-in' }, // Updated Instant Cash
+            { text: 'Can use <strong>/rtp free</strong>' },
+            { text: '<strong>Premium Support</strong>' }
+        ]
+    },
+    {
+        name: 'GEN-Z Status', price: 490, description: 'The peak of server privilege.', color: 'cyan', isPopular: false, buttonText: 'Buy GEN-Z', featureIconColor: '#06b6d4',
+        features: [
+            { text: '<strong>GEN-Z Tag</strong> in Discord & Server' },
+            { text: 'Can set <strong>7 homes</strong> at a time' },
+            { text: 'Extra inventory <strong>Level 6 (bp)</strong>' },
+            { text: 'Can have <strong>60 shops</strong> at a time' },
+            { text: 'Massive <strong>20 extra hearts</strong>' },
+            { text: '<strong>All skills max (Level-10)</strong>' },
+            { text: '<strong>Carry Villager</strong> in inventory' },
+            { text: '<strong>Carry Mobs</strong> in inventory' },
+            { text: 'Exclusive Command: <strong>Night Vision (/nv)</strong>' },
+            { text: '<strong>$300 Daily Reward</strong>' },
+            { text: '<strong>$12,000 Instant</strong> cash-in' }, // Updated Instant Cash
             { text: 'Can use <strong>/rtp free</strong>' },
             { text: '<strong>Premium Support</strong>' }
         ]
@@ -76,7 +132,7 @@ const renderRanks = () => {
             <section class="rank-card rounded-2xl p-6 shadow-xl ${rank.isPopular ? 'active-rank md:scale-105' : ''}">
                 <div class="text-center mb-6">
                     ${rank.isPopular ? '<div class="inline-block bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase mb-2">Most Popular</div>' : ''}
-                    <h2 class="${rank.name === 'AURA+ Status' ? 'text-3xl font-bold aura-gradient-text' : 'text-3xl font-bold'}" style="color: ${rank.featureIconColor}">${rank.name}</h2>
+                    <h2 class="${rank.name.includes('AURA+') ? 'text-3xl font-bold aura-gradient-text' : 'text-3xl font-bold'}" style="color: ${rank.featureIconColor}">${rank.name}</h2>
                     <p class="text-base text-gray-400">${rank.description}</p>
                     <div class="mt-3">
                         <span class="text-5xl font-black text-white">₹${rank.price}</span>
