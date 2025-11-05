@@ -2,7 +2,8 @@
 const API_ENDPOINT = "http://gc1.lordcloud.ovh:25531/api/rank-purchase";
 const API_KEY = "drakosecretkey"; // Matches the Skript option
 const ADMIN_EMAIL = "drakomine.official@gmail.com";
-const qrCodeImage = "IMG_20251028_214647.jpg"; // Placeholder path
+// Using a generic name for the QR code image
+const qrCodeImage = "qr-code.jpg"; 
 
 const ranksData = [
     {
@@ -122,54 +123,75 @@ window.closeMessageModal = () => {
     document.getElementById('message-modal').classList.add('hidden');
 };
 
-// --- Main Logic Functions ---
+/** Closes the payment modal */
+window.closeModal = () => {
+    document.getElementById('payment-modal').classList.add('hidden');
+};
+
+/** Renders a single rank card HTML */
+const generateRankHTML = (rank) => {
+    const featuresHtml = rank.features.map(f => `<li class="flex items-start"><span class="mr-2 text-${rank.color}-400">✓</span><div>${f.text}</div></li>`).join('');
+    
+    // Determine the specific gradient class for the title
+    let titleClasses = 'text-3xl font-bold';
+    let customColorStyle = '';
+
+    switch (rank.name) {
+        case 'AURA+':
+            titleClasses += ' gradient-text gradient-aura-plus';
+            break;
+        case 'ELITE':
+            titleClasses += ' gradient-text gradient-elite';
+            break;
+        case 'SIGMA':
+            titleClasses += ' gradient-text gradient-sigma';
+            break;
+        case 'GEN-Z':
+            titleClasses += ' gradient-text gradient-gen-z';
+            break;
+        default:
+            // For VIP/VVIP, use the standard color (from featureIconColor)
+            if (rank.featureIconColor) {
+                customColorStyle = `style="color: ${rank.featureIconColor}"`;
+            }
+            break;
+    }
+
+    return `
+        <section class="rank-card rounded-2xl p-6 shadow-xl ${rank.isPopular ? 'active-rank md:scale-105' : ''}">
+            <div class="text-center mb-6">
+                ${rank.isPopular ? '<div class="inline-block bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase mb-2">Most Popular</div>' : ''}
+                <h2 class="${titleClasses}" ${customColorStyle}>${rank.name}</h2>
+                <p class="text-base text-gray-400">${rank.description}</p>
+                <div class="mt-3">
+                    <span class="text-5xl font-black text-white">₹${rank.price}</span>
+                    <span class="text-xl font-medium text-gray-400">/ Month</span>
+                </div>
+            </div>
+            <ul class="space-y-3 text-sm mb-8 list-none p-0">${featuresHtml}</ul>
+            <button onclick="openModal('${rank.name}')" class="w-full bg-${rank.color}-600 hover:bg-${rank.color}-500 font-bold py-3 rounded-xl text-white">${rank.buttonText}</button>
+        </section>
+    `;
+}
+
+// --- Main Logic Functions (FIXED to use two containers) ---
 
 const renderRanks = () => {
-    document.getElementById('ranks-container').innerHTML = ranksData.map(rank => {
-        const featuresHtml = rank.features.map(f => `<li class="flex items-start"><span class="mr-2 text-${rank.color}-400">✓</span><div>${f.text}</div></li>`).join('');
-        
-        // Determine the specific gradient class for the title
-        let titleClasses = 'text-3xl font-bold';
-        switch (rank.name) {
-            case 'AURA+':
-                titleClasses += ' gradient-text gradient-aura-plus';
-                break;
-            case 'ELITE':
-                titleClasses += ' gradient-text gradient-elite';
-                break;
-            case 'SIGMA':
-                titleClasses += ' gradient-text gradient-sigma';
-                break;
-            case 'GEN-Z':
-                titleClasses += ' gradient-text gradient-gen-z';
-                break;
-            default:
-                // For VIP/VVIP, use the standard color
-                titleClasses += ' ' + (rank.featureIconColor ? '' : '');
-                break;
-        }
+    // 1. Split the ranks data: Budget (VIP, VVIP) and Premium (AURA+, ELITE, SIGMA, GEN-Z)
+    const budgetRanks = ranksData.slice(0, 2); 
+    const premiumRanks = ranksData.slice(2); 
 
-        // Apply a custom color style for non-gradient ranks (VIP/VVIP)
-        const customColorStyle = !titleClasses.includes('gradient-text') && rank.featureIconColor 
-                                 ? `style="color: ${rank.featureIconColor}"` 
-                                 : '';
+    // 2. Get the correct container elements
+    const budgetContainer = document.getElementById('budget-ranks-container');
+    const premiumContainer = document.getElementById('prinuum-ranks-container');
 
-        return `
-            <section class="rank-card rounded-2xl p-6 shadow-xl ${rank.isPopular ? 'active-rank md:scale-105' : ''}">
-                <div class="text-center mb-6">
-                    ${rank.isPopular ? '<div class="inline-block bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase mb-2">Most Popular</div>' : ''}
-                    <h2 class="${titleClasses}" ${customColorStyle}>${rank.name}</h2>
-                    <p class="text-base text-gray-400">${rank.description}</p>
-                    <div class="mt-3">
-                        <span class="text-5xl font-black text-white">₹${rank.price}</span>
-                        <span class="text-xl font-medium text-gray-400">/ Month</span>
-                    </div>
-                </div>
-                <ul class="space-y-3 text-sm mb-8 list-none p-0">${featuresHtml}</ul>
-                <button onclick="openModal('${rank.name}')" class="w-full bg-${rank.color}-600 hover:bg-${rank.color}-500 font-bold py-3 rounded-xl text-white">${rank.buttonText}</button>
-            </section>
-        `;
-    }).join('');
+    // 3. Render ranks into their respective containers
+    if (budgetContainer) {
+        budgetContainer.innerHTML = budgetRanks.map(generateRankHTML).join('');
+    }
+    if (premiumContainer) {
+        premiumContainer.innerHTML = premiumRanks.map(generateRankHTML).join('');
+    }
 };
 
 window.openModal = (rankName) => {
@@ -179,15 +201,14 @@ window.openModal = (rankName) => {
     document.getElementById('payment-modal').classList.remove('hidden');
 };
 
-window.closeModal = () => {
-    document.getElementById('payment-modal').classList.add('hidden');
-};
 
 window.showStep = (step) => {
+    const modalStep1 = document.getElementById('modal-step-1');
+    const modalStep2 = document.getElementById('modal-step-2');
     const finalPrice = currentModalRank.price - 20;
+
     if (step === 1) {
-        document.getElementById('modal-step-1').innerHTML = `
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500">✕</button>
+        modalStep1.innerHTML = `
             <h3 class="text-2xl font-bold text-white mb-4">Checkout: ${currentModalRank.name}</h3>
             <div class="p-3 bg-gray-800 rounded-lg border border-gray-700 mb-4">
                 <div class="flex justify-between"><span>Original Price:</span><span class="line-through">₹${currentModalRank.price}</span></div>
@@ -217,15 +238,15 @@ window.showStep = (step) => {
             }
             showStep(2);
         };
-        document.getElementById('modal-step-1').classList.remove('hidden');
-        document.getElementById('modal-step-2').classList.add('hidden');
+        modalStep1.classList.remove('hidden');
+        modalStep2.classList.add('hidden');
     } else {
-        document.getElementById('modal-step-2').innerHTML = `
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500">✕</button>
+        modalStep2.innerHTML = `
             <h3 class="text-2xl font-bold text-white mb-4 text-center">Scan to Pay</h3>
             <p class="text-gray-400 text-center mb-4">Scan the QR code to pay <strong class="text-white">₹${finalPrice}</strong></p>
             <div class="flex justify-center mb-4">
                 <div class="p-2 bg-white rounded-lg border-2 border-gray-400">
+                    <!-- Using a generic image name, with a placeholder fallback -->
                     <img src="${qrCodeImage}" alt="Payment QR Code" class="rounded-md w-64 h-64" onerror="this.onerror=null;this.src='https://placehold.co/256x256/1f2937/d1d5db?text=QR+Code+Placeholder';"/>
                 </div>
             </div>
@@ -238,8 +259,8 @@ window.showStep = (step) => {
             <button onclick="handleConfirmationAndRedirect()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-xl mb-2">I've Paid! Submit Proof</button>
             <button onclick="showStep(1)" class="w-full text-gray-400 hover:text-white py-2">Back to details</button>
         `;
-        document.getElementById('modal-step-1').classList.add('hidden');
-        document.getElementById('modal-step-2').classList.remove('hidden');
+        modalStep1.classList.add('hidden');
+        modalStep2.classList.remove('hidden');
     }
 };
 
@@ -251,7 +272,7 @@ const sendRankConfirmation = async () => {
         username: modalState.username,
         rank: currentModalRank.name,
         platform: modalState.platform,
-        price: finalPrice, // Send the final discounted price
+        price: finalPrice, 
         email: modalState.email
     };
 
@@ -260,7 +281,7 @@ const sendRankConfirmation = async () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-API-KEY': API_KEY // Custom header for API key authentication
+                'X-API-KEY': API_KEY 
             },
             body: JSON.stringify(payload)
         });
@@ -271,21 +292,18 @@ const sendRankConfirmation = async () => {
             console.log('Skript API Success:', responseText);
         } else {
             console.error('Skript API Error:', responseText);
-            showMessageModal(`Error submitting purchase to server: ${responseText || response.statusText}. Please contact staff.`);
         }
     } catch (error) {
         console.error('Network Error connecting to Skript API:', error);
-        showMessageModal('Warning: Could not instantly connect to the server API. The purchase details have been prepared for email submission (the next step).');
     }
 };
-
 
 /** Handles both sending data and opening mail app (Combines previous functionality) */
 window.handleConfirmationAndRedirect = () => {
     // 1. Send the data to the Skript API (non-blocking)
     sendRankConfirmation();
 
-    // 2. Prepare and redirect to the email client (the original functionality)
+    // 2. Prepare and redirect to the email client
     const subject = encodeURIComponent(`DRAKOMINE Rank Purchase - ${modalState.username}`);
     const body = encodeURIComponent(`Username: ${modalState.username}\nRank: ${currentModalRank.name}\nPlatform: ${modalState.platform}\nEmail: ${modalState.email || 'Not provided'}\n\n--- Please attach your payment screenshot here ---`);
     
@@ -299,6 +317,7 @@ window.handleConfirmationAndRedirect = () => {
 };
 
 document.getElementById('payment-modal').addEventListener('click', (e) => {
+    // Only close if the background overlay is clicked, not the modal content
     if (e.target.id === 'payment-modal') closeModal();
 });
 
